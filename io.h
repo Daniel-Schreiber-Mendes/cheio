@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 
 typedef struct
@@ -23,8 +24,14 @@ void file_destruct(File const *const f);
 
 //string.c
 
+bool fstrcmp(FILE *file, char const *const string);
 char* strfndi(char *const string, char const ch, uint16_t const i);
-FILE* ffndi(FILE *file, char const ch, uint16_t const i);
+bool ffndi(FILE *const file, char *const ch, uint16_t const i);
+
+
+//executes the given scope for each occurance of a string inside a file
+#define fforeach(file, string)\
+	while(ffndi(file, ))
 
 
 #endif

@@ -24,14 +24,9 @@ void file_destruct(File const *const f);
 
 //string.c
 
-bool fstrcmp(FILE *file, char const *const string);
-char* strfndi(char *const string, char const ch, uint16_t const i);
-bool ffndi(FILE *const file, char *const ch, uint16_t const i);
-
-
-//executes the given scope for each occurance of a string inside a file
-#define fforeach(file, string)\
-	while(ffndi(file, ))
+char* strfndch(char *const str, char const ch, uint16_t const i);
+char* fbcp(FILE *const f);
+char* fndstrchnk(char const *restrict buffer, char const *restrict key0, char const *restrict key1);
 
 
 #endif

@@ -26,7 +26,15 @@ void file_destruct(File const *const f);
 
 char* strfndch(char *const str, char const ch, uint16_t const i);
 char* fbcp(FILE *const f);
-char* fndstrchnk(char const *restrict buffer, char const *restrict key0, char const *restrict key1);
+char* fndstrchnk(char const *restrict buffer, char const *restrict key0, char const *restrict key1, uint16_t *const offset);
+
+//@bufferlen: uint16_t* which will be filled with the value length bufferchunk
+//@buffer: char* to the buffer that contains all the text
+//@bufferchunk: char** that will be filled with the chunk found between key0 and key1
+//@key0 & key1: char*
+#define fndstrchnk_foreach(buffer, bufferchunk, key0, key1)\
+	uint16_t offset = 0;\
+	while ((*bufferchunk = fndstrchnk(buffer + offset, key0, key1, &offset)))
 
 
 #endif

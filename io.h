@@ -6,26 +6,37 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-
-
-typedef struct
-{
-	void *buffer;
-	uint16_t bufferSize; //size in bytes
-}
-File;
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 
 //file.c
-bool file_construct(File *const f, char const *restrict path, char const *restrict mode);
-bool file_construct_bin(File *const f, char const *const path);
-void file_destruct(File const *const f);
+char* fbcp(FILE *const f);
+
+//to prevent naming collision concatenate dir and end with the entryalias to create unique names/labels
+#define fforeach(path, entryalias, lambda)\
+{\
+	DIR *const dir##entryalias = opendir(path);\
+    if (!dir##entryalias)\
+    {\
+        g_print("Folder %s could not be opened", path);\
+        goto end##entryalias;\
+    }\
+    struct dirent *entryalias;\
+    while ((entryalias = readdir(dir##entryalias)) != NULL) \
+    {\
+    	if(!strcmp(entryalias->d_name, ".") || !strcmp(entryalias->d_name, "..")) continue;\
+		lambda;\
+    }\
+    closedir(dir##entryalias);\
+    end##entryalias: (void)0;\
+}
 
 
 //string.c
-
 char* strfndch(char *const str, char const ch, uint16_t const i);
-char* fbcp(FILE *const f);
 char* fndstrchnk(char const *restrict buffer, char const *restrict key0, char const *restrict key1, uint16_t *const offset);
 
 //@bufferlen: uint16_t* which will be filled with the value length bufferchunk

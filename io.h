@@ -16,7 +16,7 @@
 char* fbcp(FILE *const f);
 
 //to prevent naming collision concatenate dir and end with the entryalias to create unique names/labels
-#define fforeach(path, entryalias, lambda)\
+#define fforeach(path, entryalias, expr)\
 {\
 	DIR *const dir##entryalias = opendir(path);\
     if (!dir##entryalias)\
@@ -28,7 +28,7 @@ char* fbcp(FILE *const f);
     while ((entryalias = readdir(dir##entryalias)) != NULL) \
     {\
     	if(!strcmp(entryalias->d_name, ".") || !strcmp(entryalias->d_name, "..")) continue;\
-		lambda;\
+		expr;\
     }\
     closedir(dir##entryalias);\
     end##entryalias: (void)0;\
